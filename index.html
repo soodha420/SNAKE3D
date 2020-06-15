@@ -63,6 +63,10 @@ html {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  
+}
+#value{
+    color:white;
 }
     </style>
 </head>
@@ -76,6 +80,21 @@ html {
     </nav>
     <div class="stopwatch"></div>
     <ul class="results"></ul>
+    
+    <div class="container">
+        <input
+          id="slider"
+          type="range"
+          min="1"
+          max="100"
+          value="1"
+          class="slider"
+        />
+      </div>
+      <div class="box" id="value"></div>
+      
+
+      
 
       
     <script src="./three.js"></script>
@@ -102,9 +121,11 @@ html {
         var end = false, keysQueue = [];
 
         var snake = [], apple;
-        var cube = new THREE.BoxGeometry( 1, 1, 1 );
+        var cube = new THREE.BoxGeometry(1,1,1);
         var gameCube = new THREE.BoxGeometry( cubeSize, cubeSize, cubeSize );
         var direction = new THREE.Vector3(1, 0, 0);
+        var sphere=new THREE.SphereGeometry(1,10,10);
+        var speed;
 
 
         scene.background = new THREE.Color( BACKGROUND_COLOR );
@@ -115,6 +136,13 @@ html {
         cube.center();
 
         function init(){
+            var slider = document.getElementById("slider");
+        var val = document.getElementById("value");
+        val.innerHTML = slider.value;
+        slider.oninput = function () {
+          val.innerHTML = this.value;
+          speed = this.value;
+        };
 
             renderer.setSize(WIDTH, HEIGHT);
             document.body.appendChild(renderer.domElement);
@@ -131,7 +159,7 @@ html {
             }
 
             var appleCubeMaterial = new THREE.MeshPhongMaterial( { color: 0xc62828} );
-            apple = new Cube(spawnAppleVector(), appleCubeMaterial, scene);
+            apple = new Cube(spawnAppleVector(), appleCubeMaterial, scene,sphere);
             var edgesMaterial = new THREE.LineBasicMaterial( { color: 0xffffff } );
             new Cube(new THREE.Vector3(0,0,0), edgesMaterial, scene, gameCube, true).setPosition(0,0,0);
 
